@@ -1,6 +1,6 @@
 package com.leganas.game.framework.interfaces;
 
-/**Абстрактный класс описывающий Event типа Команда для чего либо*/
+/**РђР±СЃС‚СЂР°РєС‚РЅС‹Р№ РєР»Р°СЃСЃ РѕРїРёСЃС‹РІР°СЋС‰РёР№ Event С‚РёРїР° РљРѕРјР°РЅРґР° РґР»СЏ С‡РµРіРѕ Р»РёР±Рѕ*/
 public abstract class Command<T> extends Event{
 	public abstract Event ApplyCommand(T controller);
 	

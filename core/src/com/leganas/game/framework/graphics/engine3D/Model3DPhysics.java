@@ -8,8 +8,8 @@ import com.leganas.game.framework.graphics.AbstractModel;
 import com.leganas.game.framework.graphics.engine3D.ModelInstanceAdv.TransformListener;
 
 public class Model3DPhysics extends AbstractModel<ModelInstanceAdv> implements TransformListener{
-	/**Отключает использование света для отдельно взятой модели 
-	 * на мобильных устройствах, дабы не тупило (пока так будем делать)*/
+	/**РћС‚РєР»СЋС‡Р°РµС‚ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ СЃРІРµС‚Р° РґР»СЏ РѕС‚РґРµР»СЊРЅРѕ РІР·СЏС‚РѕР№ РјРѕРґРµР»Рё 
+	 * РЅР° РјРѕР±РёР»СЊРЅС‹С… СѓСЃС‚СЂРѕР№СЃС‚РІР°С…, РґР°Р±С‹ РЅРµ С‚СѓРїРёР»Рѕ (РїРѕРєР° С‚Р°Рє Р±СѓРґРµРј РґРµР»Р°С‚СЊ)*/
 	public boolean environmentEconom = false;
 	public Model3DPhysics() {
 		super();
@@ -31,7 +31,7 @@ public class Model3DPhysics extends AbstractModel<ModelInstanceAdv> implements T
     }
 	
 	protected Vector3 preview;
-	/**Метод вызывается системой при преобразовании модели*/
+	/**РњРµС‚РѕРґ РІС‹Р·С‹РІР°РµС‚СЃСЏ СЃРёСЃС‚РµРјРѕР№ РїСЂРё РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРё РјРѕРґРµР»Рё*/
 	@Override
 	public void transformEvent(Matrix4 transform) {
 		Vector3 posMan = new Vector3();

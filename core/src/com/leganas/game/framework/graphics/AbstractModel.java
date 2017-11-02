@@ -11,7 +11,7 @@ public abstract class AbstractModel<T>{
 		outOfRange,
 	}
 	
-	public model3DStatus status = model3DStatus.init; // статус графической модельки сущности
+	public model3DStatus status = model3DStatus.init; // СЃС‚Р°С‚СѓСЃ РіСЂР°С„РёС‡РµСЃРєРѕР№ РјРѕРґРµР»СЊРєРё СЃСѓС‰РЅРѕСЃС‚Рё
     
 	public interface ModelListener {
 		public void modelMessage(int modelID, Object msg);

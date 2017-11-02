@@ -2,10 +2,10 @@ package com.leganas.game.framework.interfaces;
 
 import com.badlogic.gdx.utils.Array;
 
-/**Абстрактный менеджер событий (постановка в очередь и выполнение)
- * T - тип события*/
+/**РђР±СЃС‚СЂР°РєС‚РЅС‹Р№ РјРµРЅРµРґР¶РµСЂ СЃРѕР±С‹С‚РёР№ (РїРѕСЃС‚Р°РЅРѕРІРєР° РІ РѕС‡РµСЂРµРґСЊ Рё РІС‹РїРѕР»РЅРµРЅРёРµ)
+ * T - С‚РёРї СЃРѕР±С‹С‚РёСЏ*/
 public abstract class Manager<T extends Event>{
-	/**интерфейс обратной связи через назначенного слушателя*/
+	/**РёРЅС‚РµСЂС„РµР№СЃ РѕР±СЂР°С‚РЅРѕР№ СЃРІСЏР·Рё С‡РµСЂРµР· РЅР°Р·РЅР°С‡РµРЅРЅРѕРіРѕ СЃР»СѓС€Р°С‚РµР»СЏ*/
 	public interface ManagerListener {
 		public void ListenerMessage(Object msg);
 	}

@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.bullet.collision.ContactListener;
 import com.leganas.game.world.entity.EntityController;
 
-/**Объект расширяющий ContactListener , в нем реализуется реакция на столкновения
- * UserValueID общий для всех игровых миров посему приходится извращатся*/
+/**РћР±СЉРµРєС‚ СЂР°СЃС€РёСЂСЏСЋС‰РёР№ ContactListener , РІ РЅРµРј СЂРµР°Р»РёР·СѓРµС‚СЃСЏ СЂРµР°РєС†РёСЏ РЅР° СЃС‚РѕР»РєРЅРѕРІРµРЅРёСЏ
+ * UserValueID РѕР±С‰РёР№ РґР»СЏ РІСЃРµС… РёРіСЂРѕРІС‹С… РјРёСЂРѕРІ РїРѕСЃРµРјСѓ РїСЂРёС…РѕРґРёС‚СЃСЏ РёР·РІСЂР°С‰Р°С‚СЃСЏ*/
 public class Contacter extends ContactListener{
 	public interface PhisicsContactListener {
-		/**Метод вызывается встроенным обработчиком столкновений*/
+		/**РњРµС‚РѕРґ РІС‹Р·С‹РІР°РµС‚СЃСЏ РІСЃС‚СЂРѕРµРЅРЅС‹Рј РѕР±СЂР°Р±РѕС‚С‡РёРєРѕРј СЃС‚РѕР»РєРЅРѕРІРµРЅРёР№*/
         public boolean onContactAdded (int worldID0,int userValue0, int partId0, int index0, boolean match0,
 				   					   int worldID1,int userValue1, int partId1, int index1, boolean match1);        
         public void onContactProcessed(int worldID0,int userValue0, int worldID1,int userValue1);
@@ -22,12 +22,12 @@ public class Contacter extends ContactListener{
 		return EntityController.entityID_worldID.get(entityID);
 	}
 	
-	/**Вызывается при возникновении столкновения между фигурами
-     * имеет несколько вариаций для @Override*/
+	/**Р’С‹Р·С‹РІР°РµС‚СЃСЏ РїСЂРё РІРѕР·РЅРёРєРЅРѕРІРµРЅРёРё СЃС‚РѕР»РєРЅРѕРІРµРЅРёСЏ РјРµР¶РґСѓ С„РёРіСѓСЂР°РјРё
+     * РёРјРµРµС‚ РЅРµСЃРєРѕР»СЊРєРѕ РІР°СЂРёР°С†РёР№ РґР»СЏ @Override*/
 	@Override
     public boolean onContactAdded (int userValue0, int partId0, int index0, boolean match0,
             					   int userValue1, int partId1, int index1, boolean match1){
-		// посылаем полученное столкновение слушающему нас контроллеру миров
+		// РїРѕСЃС‹Р»Р°РµРј РїРѕР»СѓС‡РµРЅРЅРѕРµ СЃС‚РѕР»РєРЅРѕРІРµРЅРёРµ СЃР»СѓС€Р°СЋС‰РµРјСѓ РЅР°СЃ РєРѕРЅС‚СЂРѕР»Р»РµСЂСѓ РјРёСЂРѕРІ
 		if (listener != null) listener.onContactAdded(getWorldID(userValue0),userValue0, partId0, index0, match0, 
 													  getWorldID(userValue0),userValue1, partId1, index1, match1);
 		return true;

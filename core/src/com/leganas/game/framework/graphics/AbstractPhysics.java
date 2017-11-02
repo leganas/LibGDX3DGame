@@ -5,7 +5,7 @@ import com.leganas.game.world.entity.Entity;
 
 public abstract class AbstractPhysics implements Disposable {
 	
-	/**Добавляет сущность в физический мир*/
+	/**Р”РѕР±Р°РІР»СЏРµС‚ СЃСѓС‰РЅРѕСЃС‚СЊ РІ С„РёР·РёС‡РµСЃРєРёР№ РјРёСЂ*/
 	public abstract void addEntity(Entity ent);
 
 	public abstract void removeEntity(Entity ent);

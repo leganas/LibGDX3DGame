@@ -1,7 +1,7 @@
 package com.leganas.game.framework.interfaces;
 
 public abstract class Net<T> {
-	// Храним экземпляр игрового контроллера 
+	// РҐСЂР°РЅРёРј СЌРєР·РµРјРїР»СЏСЂ РёРіСЂРѕРІРѕРіРѕ РєРѕРЅС‚СЂРѕР»Р»РµСЂР° 
 	public T gameController;
 
 	public Net(T gameController) {

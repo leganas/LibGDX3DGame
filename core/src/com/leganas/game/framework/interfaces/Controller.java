@@ -2,7 +2,7 @@ package com.leganas.game.framework.interfaces;
 
 import com.badlogic.gdx.utils.Disposable;
 
-/**Абстрактный контроллер*/
+/**РђР±СЃС‚СЂР°РєС‚РЅС‹Р№ РєРѕРЅС‚СЂРѕР»Р»РµСЂ*/
 public abstract class Controller<T> implements Disposable{
 	
 	public T items;

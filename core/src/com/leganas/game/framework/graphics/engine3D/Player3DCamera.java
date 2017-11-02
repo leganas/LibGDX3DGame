@@ -6,7 +6,7 @@ import com.leganas.game.world.GameWorld3D;
 
 
 public class Player3DCamera {
-	/**Перспективная камера*/
+	/**РџРµСЂСЃРїРµРєС‚РёРІРЅР°СЏ РєР°РјРµСЂР°*/
     public PerspectiveCamera cam;
     GameWorld3D world;
     

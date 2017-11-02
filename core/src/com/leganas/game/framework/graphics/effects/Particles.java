@@ -10,14 +10,14 @@ import com.leganas.game.MySyper2DGame;
 import com.leganas.game.world.render.WorldRender;
 
 
-/**Класс для работы с эффектами взрывов и огня*/
+/**РљР»Р°СЃСЃ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ СЌС„С„РµРєС‚Р°РјРё РІР·СЂС‹РІРѕРІ Рё РѕРіРЅСЏ*/
 public class Particles {
 	public static Particles inst;
 	public ParticleSystem system;
 	private PFXPool bulletHitPool;
 	private PFXPool blueExplosionPool;
 
-	/**Класс для работы с эффектами взрывов и огня*/
+	/**РљР»Р°СЃСЃ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ СЌС„С„РµРєС‚Р°РјРё РІР·СЂС‹РІРѕРІ Рё РѕРіРЅСЏ*/
 	public Particles(WorldRender render) {
 		inst = this;
 		system = ParticleSystem.get();

@@ -1,15 +1,15 @@
 package com.leganas.game.framework.interfaces;
 
 public abstract class Message<T> extends Event{
-	/**Метод реализующий ответ на Message
-	 * @param controller - Контроллер при помощи которого будет сформирован ответ
-	 * @param id - идентификатор пославшего команду*/
+	/**РњРµС‚РѕРґ СЂРµР°Р»РёР·СѓСЋС‰РёР№ РѕС‚РІРµС‚ РЅР° Message
+	 * @param controller - РљРѕРЅС‚СЂРѕР»Р»РµСЂ РїСЂРё РїРѕРјРѕС‰Рё РєРѕС‚РѕСЂРѕРіРѕ Р±СѓРґРµС‚ СЃС„РѕСЂРјРёСЂРѕРІР°РЅ РѕС‚РІРµС‚
+	 * @param id - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕСЃР»Р°РІС€РµРіРѕ РєРѕРјР°РЅРґСѓ*/
 	public abstract Event ResponseMessage(T controller, int id);
 
-	/** Базовый метод который реализует через абстрактный replyMessage ответ на Message*/
+	/** Р‘Р°Р·РѕРІС‹Р№ РјРµС‚РѕРґ РєРѕС‚РѕСЂС‹Р№ СЂРµР°Р»РёР·СѓРµС‚ С‡РµСЂРµР· Р°Р±СЃС‚СЂР°РєС‚РЅС‹Р№ replyMessage РѕС‚РІРµС‚ РЅР° Message*/
 	@Override
 	public Event Apply(Controller<?> controller, int id) {
-		// Базовый метод который реализует через абстрактный ответ на Message
+		// Р‘Р°Р·РѕРІС‹Р№ РјРµС‚РѕРґ РєРѕС‚РѕСЂС‹Р№ СЂРµР°Р»РёР·СѓРµС‚ С‡РµСЂРµР· Р°Р±СЃС‚СЂР°РєС‚РЅС‹Р№ РѕС‚РІРµС‚ РЅР° Message
 		return  ResponseMessage((T) controller,id);
 	}
 }

@@ -14,45 +14,45 @@ import com.badlogic.gdx.physics.bullet.linearmath.btMotionState;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
-/**Класс расширяющий базовый ModelInstance и 
- * описывающий как саму модель, и её положение, 
- * так и физические свойства, ограничивающие фигуры, вес и.т.д.
- * А также содержит набор конструкторов упрощающих создание модели как объекта физического тела*/
+/**РљР»Р°СЃСЃ СЂР°СЃС€РёСЂСЏСЋС‰РёР№ Р±Р°Р·РѕРІС‹Р№ ModelInstance Рё 
+ * РѕРїРёСЃС‹РІР°СЋС‰РёР№ РєР°Рє СЃР°РјСѓ РјРѕРґРµР»СЊ, Рё РµС‘ РїРѕР»РѕР¶РµРЅРёРµ, 
+ * С‚Р°Рє Рё С„РёР·РёС‡РµСЃРєРёРµ СЃРІРѕР№СЃС‚РІР°, РѕРіСЂР°РЅРёС‡РёРІР°СЋС‰РёРµ С„РёРіСѓСЂС‹, РІРµСЃ Рё.С‚.Рґ.
+ * Рђ С‚Р°РєР¶Рµ СЃРѕРґРµСЂР¶РёС‚ РЅР°Р±РѕСЂ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРѕРІ СѓРїСЂРѕС‰Р°СЋС‰РёС… СЃРѕР·РґР°РЅРёРµ РјРѕРґРµР»Рё РєР°Рє РѕР±СЉРµРєС‚Р° С„РёР·РёС‡РµСЃРєРѕРіРѕ С‚РµР»Р°*/
 public class ModelInstanceAdv extends ModelInstance implements Disposable{
 	public interface TransformListener {
-		/**Метод вызывается при преобразовании модели*/
+		/**РњРµС‚РѕРґ РІС‹Р·С‹РІР°РµС‚СЃСЏ РїСЂРё РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРё РјРѕРґРµР»Рё*/
 		public void transformEvent(Matrix4 transform);
 	}
-	/**Объект для определения столкновений в ручном режиме
-	 * инициализируется по средством создания коробки вокруг модели*/
+	/**РћР±СЉРµРєС‚ РґР»СЏ РѕРїСЂРµРґРµР»РµРЅРёСЏ СЃС‚РѕР»РєРЅРѕРІРµРЅРёР№ РІ СЂСѓС‡РЅРѕРј СЂРµР¶РёРјРµ
+	 * РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚СЃСЏ РїРѕ СЃСЂРµРґСЃС‚РІРѕРј СЃРѕР·РґР°РЅРёСЏ РєРѕСЂРѕР±РєРё РІРѕРєСЂСѓРі РјРѕРґРµР»Рё*/
 	public final btCollisionObject collisionObject;
-	/**Смещение тела (хуй знает что такое по умолчанию типа нет смещения)*/
+	/**РЎРјРµС‰РµРЅРёРµ С‚РµР»Р° (С…СѓР№ Р·РЅР°РµС‚ С‡С‚Рѕ С‚Р°РєРѕРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ С‚РёРїР° РЅРµС‚ СЃРјРµС‰РµРЅРёСЏ)*/
 	public Vector3 bodyOffset = new Vector3();
-	/**Описание модели как твердого тела, используем в место btCollisionObject*/
+	/**РћРїРёСЃР°РЅРёРµ РјРѕРґРµР»Рё РєР°Рє С‚РІРµСЂРґРѕРіРѕ С‚РµР»Р°, РёСЃРїРѕР»СЊР·СѓРµРј РІ РјРµСЃС‚Рѕ btCollisionObject*/
     public final btRigidBody body;
-    /**Слушатель для слежения за трансформациями модели*/
+    /**РЎР»СѓС€Р°С‚РµР»СЊ РґР»СЏ СЃР»РµР¶РµРЅРёСЏ Р·Р° С‚СЂР°РЅСЃС„РѕСЂРјР°С†РёСЏРјРё РјРѕРґРµР»Рё*/
     public final MotionStateAdv motionState; 
-    /**центр модельки*/ 
+    /**С†РµРЅС‚СЂ РјРѕРґРµР»СЊРєРё*/ 
     public final Vector3 center = new Vector3();
-    /**размер модельки*/
+    /**СЂР°Р·РјРµСЂ РјРѕРґРµР»СЊРєРё*/
     public final Vector3 dimens = new Vector3();
-    /**Радиус ограничивающего модель шара*/
+    /**Р Р°РґРёСѓСЃ РѕРіСЂР°РЅРёС‡РёРІР°СЋС‰РµРіРѕ РјРѕРґРµР»СЊ С€Р°СЂР°*/
     public final float radius;
-    /** ограничительный прямоугольник */
+    /** РѕРіСЂР°РЅРёС‡РёС‚РµР»СЊРЅС‹Р№ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє */
     private final BoundingBox bound = new  BoundingBox(); 
-    /**Сохранять ссылку на эту ёбань пока буду , чтобы ошибки о удалении не лезли*/
+    /**РЎРѕС…СЂР°РЅСЏС‚СЊ СЃСЃС‹Р»РєСѓ РЅР° СЌС‚Сѓ С‘Р±Р°РЅСЊ РїРѕРєР° Р±СѓРґСѓ , С‡С‚РѕР±С‹ РѕС€РёР±РєРё Рѕ СѓРґР°Р»РµРЅРёРё РЅРµ Р»РµР·Р»Рё*/
     btRigidBody.btRigidBodyConstructionInfo bodyInfo;
 
-    /**Назначение слушателя за преобразованиями модели*/
+    /**РќР°Р·РЅР°С‡РµРЅРёРµ СЃР»СѓС€Р°С‚РµР»СЏ Р·Р° РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏРјРё РјРѕРґРµР»Рё*/
     public void setTransformlistener(TransformListener transformListener){
     	motionState.setTransformlistener(transformListener);
     }
     public ModelInstanceAdv(Model model,String node ,btRigidBody.btRigidBodyConstructionInfo bodyInfo) {
         super(model,node);
-        calculateBoundingBox(bound); // считает и записывает ограничительный прямоугольник для текущей модели
-        bound.getCenter(center); // вычисляем центр
-        bound.getDimensions(dimens); // вычисляет размеры ограничивабщего прямоугольника
-        radius = dimens.len()/2f; // радиус это половина размера т.к. мы в центре
+        calculateBoundingBox(bound); // СЃС‡РёС‚Р°РµС‚ Рё Р·Р°РїРёСЃС‹РІР°РµС‚ РѕРіСЂР°РЅРёС‡РёС‚РµР»СЊРЅС‹Р№ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє РґР»СЏ С‚РµРєСѓС‰РµР№ РјРѕРґРµР»Рё
+        bound.getCenter(center); // РІС‹С‡РёСЃР»СЏРµРј С†РµРЅС‚СЂ
+        bound.getDimensions(dimens); // РІС‹С‡РёСЃР»СЏРµС‚ СЂР°Р·РјРµСЂС‹ РѕРіСЂР°РЅРёС‡РёРІР°Р±С‰РµРіРѕ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРєР°
+        radius = dimens.len()/2f; // СЂР°РґРёСѓСЃ СЌС‚Рѕ РїРѕР»РѕРІРёРЅР° СЂР°Р·РјРµСЂР° С‚.Рє. РјС‹ РІ С†РµРЅС‚СЂРµ
         collisionObject = new btCollisionObject();
         collisionObject.setCollisionShape(new btBoxShape(dimens));
         body = new btRigidBody(bodyInfo);
@@ -64,10 +64,10 @@ public class ModelInstanceAdv extends ModelInstance implements Disposable{
     
 	public ModelInstanceAdv(Model model,btRigidBody.btRigidBodyConstructionInfo bodyInfo) {
         super(model);
-        calculateBoundingBox(bound); // считает и записывает ограничительный прямоугольник для текущей модели
-        bound.getCenter(center); // вычисляем центр
-        bound.getDimensions(dimens); // вычисляет размеры ограничивабщего прямоугольника
-        radius = dimens.len()/2f; // радиус это половина размера т.к. мы в центре
+        calculateBoundingBox(bound); // СЃС‡РёС‚Р°РµС‚ Рё Р·Р°РїРёСЃС‹РІР°РµС‚ РѕРіСЂР°РЅРёС‡РёС‚РµР»СЊРЅС‹Р№ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє РґР»СЏ С‚РµРєСѓС‰РµР№ РјРѕРґРµР»Рё
+        bound.getCenter(center); // РІС‹С‡РёСЃР»СЏРµРј С†РµРЅС‚СЂ
+        bound.getDimensions(dimens); // РІС‹С‡РёСЃР»СЏРµС‚ СЂР°Р·РјРµСЂС‹ РѕРіСЂР°РЅРёС‡РёРІР°Р±С‰РµРіРѕ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРєР°
+        radius = dimens.len()/2f; // СЂР°РґРёСѓСЃ СЌС‚Рѕ РїРѕР»РѕРІРёРЅР° СЂР°Р·РјРµСЂР° С‚.Рє. РјС‹ РІ С†РµРЅС‚СЂРµ
         collisionObject = new btCollisionObject();
         collisionObject.setCollisionShape(new btBoxShape(dimens));
 //        bodyInfo.setCollisionShape(new btBoxShape(dimens));
@@ -86,21 +86,21 @@ public class ModelInstanceAdv extends ModelInstance implements Disposable{
     }
     
     public static class Constructor implements Disposable{
-       	/**Модель 3D*/
+       	/**РњРѕРґРµР»СЊ 3D*/
         public final Model model;
-        /**Имя*/
+        /**РРјСЏ*/
         public String node;
-        /**ограничивающая фигура*/
+        /**РѕРіСЂР°РЅРёС‡РёРІР°СЋС‰Р°СЏ С„РёРіСѓСЂР°*/
         public btCollisionShape collShape;
-        /**Комплекс параметров твердого тела*/
+        /**РљРѕРјРїР»РµРєСЃ РїР°СЂР°РјРµС‚СЂРѕРІ С‚РІРµСЂРґРѕРіРѕ С‚РµР»Р°*/
         public final btRigidBody.btRigidBodyConstructionInfo bodyInfo;
-        /**Инерция (расчитывается если задана масса > 0)*/
+        /**РРЅРµСЂС†РёСЏ (СЂР°СЃС‡РёС‚С‹РІР°РµС‚СЃСЏ РµСЃР»Рё Р·Р°РґР°РЅР° РјР°СЃСЃР° > 0)*/
         private static Vector3 inertia = new Vector3();
-        /**Класс конструирования свойств моделей
+        /**РљР»Р°СЃСЃ РєРѕРЅСЃС‚СЂСѓРёСЂРѕРІР°РЅРёСЏ СЃРІРѕР№СЃС‚РІ РјРѕРґРµР»РµР№
          * @param model - Model3D
-         * @param node - имя фигуры
-         * @param collShape - ограничивающая фигура
-         * @param mass - масса*/
+         * @param node - РёРјСЏ С„РёРіСѓСЂС‹
+         * @param collShape - РѕРіСЂР°РЅРёС‡РёРІР°СЋС‰Р°СЏ С„РёРіСѓСЂР°
+         * @param mass - РјР°СЃСЃР°*/
         public Constructor(Model model, String node, btCollisionShape collShape, float mass){
             this.model = model;
             this.node = node;
@@ -110,11 +110,10 @@ public class ModelInstanceAdv extends ModelInstance implements Disposable{
             }else{inertia.set(0f, 0f, 0f);}
             this.bodyInfo = new btRigidBody.btRigidBodyConstructionInfo(mass, null, collShape, inertia);
         }
-        /**Класс конструирования свойств моделей
+        /**РљР»Р°СЃСЃ РєРѕРЅСЃС‚СЂСѓРёСЂРѕРІР°РЅРёСЏ СЃРІРѕР№СЃС‚РІ РјРѕРґРµР»РµР№
          * @param model - Model3D
-         * @param node - имя фигуры
-         * @param collShape - ограничивающая фигура
-         * @param mass - масса*/
+         * @param collShape - РѕРіСЂР°РЅРёС‡РёРІР°СЋС‰Р°СЏ С„РёРіСѓСЂР°
+         * @param mass - РјР°СЃСЃР°*/
         public Constructor(Model model, btConvexHullShape collShape, float mass) {
             this.model = model;
             this.collShape = collShape;
@@ -124,11 +123,10 @@ public class ModelInstanceAdv extends ModelInstance implements Disposable{
             }else{inertia.set(0f, 0f, 0f);}
             this.bodyInfo = new btRigidBody.btRigidBodyConstructionInfo(mass, null, collShape, inertia);
 		}
-        /**Класс конструирования свойств моделей
+        /**РљР»Р°СЃСЃ РєРѕРЅСЃС‚СЂСѓРёСЂРѕРІР°РЅРёСЏ СЃРІРѕР№СЃС‚РІ РјРѕРґРµР»РµР№
          * @param model - Model3D
-         * @param node - имя фигуры
-         * @param collShape - массив ограничивающих фигур 
-         * @param mass - масса*/
+         * @param collShape - РјР°СЃСЃРёРІ РѕРіСЂР°РЅРёС‡РёРІР°СЋС‰РёС… С„РёРіСѓСЂ
+         * @param mass - РјР°СЃСЃР°*/
         public Constructor(Model model, Array<btConvexHullShape> collShape, float mass) {
             this.model = model;
             for (btConvexHullShape tree : collShape) {
@@ -140,11 +138,10 @@ public class ModelInstanceAdv extends ModelInstance implements Disposable{
             }
             this.bodyInfo = new btRigidBody.btRigidBodyConstructionInfo(mass, null, this.collShape, inertia);
 		}
-        /**Класс конструирования свойств моделей
+        /**РљР»Р°СЃСЃ РєРѕРЅСЃС‚СЂСѓРёСЂРѕРІР°РЅРёСЏ СЃРІРѕР№СЃС‚РІ РјРѕРґРµР»РµР№
          * @param model - Model3D
-         * @param node - имя фигуры
-         * @param collShape - ограничивающая фигура
-         * @param mass - масса*/
+         * @param collShape - РѕРіСЂР°РЅРёС‡РёРІР°СЋС‰Р°СЏ С„РёРіСѓСЂР°
+         * @param mass - РјР°СЃСЃР°*/
 		public Constructor(Model model, btCollisionShape collShape, float mass) {
             this.model = model;
             this.collShape = collShape;
@@ -154,17 +151,14 @@ public class ModelInstanceAdv extends ModelInstance implements Disposable{
             }else{inertia.set(0f, 0f, 0f);}
             this.bodyInfo = new btRigidBody.btRigidBodyConstructionInfo(mass, null, collShape, inertia);
 		}
-        /**Класс конструирования свойств моделей
-         * @param model - Model3D
-         * @param node - имя фигуры
-         * @param collShape - ограничивающая фигура
-         * @param mass - масса*/
+        /**РљР»Р°СЃСЃ РєРѕРЅСЃС‚СЂСѓРёСЂРѕРІР°РЅРёСЏ СЃРІРѕР№СЃС‚РІ РјРѕРґРµР»РµР№
+         * @param model - Model3D */
 		public Constructor(Model model) {
             this.model = model;
             this.bodyInfo = null;
             this.node = null;
 		}
-		/**Создать описание модели*/
+		/**РЎРѕР·РґР°С‚СЊ РѕРїРёСЃР°РЅРёРµ РјРѕРґРµР»Рё*/
         public ModelInstanceAdv create(){
         	ModelInstanceAdv result;  
         	if (this.node != null) {result = new ModelInstanceAdv(model,node, bodyInfo); } else {result = new ModelInstanceAdv(model, bodyInfo);}
@@ -177,30 +171,30 @@ public class ModelInstanceAdv extends ModelInstance implements Disposable{
             if (bodyInfo != null) bodyInfo.dispose();
         }
     }
-    /**Механизм информирования о преобразовании объекта, который избавляет нас от необходимости перебирать все объекты. 
-     * Для этого служит класс с методами обратного вызова btMotionState. */
+    /**РњРµС…Р°РЅРёР·Рј РёРЅС„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ Рѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРё РѕР±СЉРµРєС‚Р°, РєРѕС‚РѕСЂС‹Р№ РёР·Р±Р°РІР»СЏРµС‚ РЅР°СЃ РѕС‚ РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё РїРµСЂРµР±РёСЂР°С‚СЊ РІСЃРµ РѕР±СЉРµРєС‚С‹. 
+     * Р”Р»СЏ СЌС‚РѕРіРѕ СЃР»СѓР¶РёС‚ РєР»Р°СЃСЃ СЃ РјРµС‚РѕРґР°РјРё РѕР±СЂР°С‚РЅРѕРіРѕ РІС‹Р·РѕРІР° btMotionState. */
     class MotionStateAdv extends btMotionState{
         Matrix4 transform;
         TransformListener transformlistener;
 		public void setTransformlistener(TransformListener transformlistener) {
 			this.transformlistener = transformlistener;
 		}
-		/**Вызывается системой эмуляции физ. мира при вызова метода  physics.dynWorld.stepSimulation
-		 * служит для сохранения состояния мира, 
-		 * ну или реакции на его изменение*/
+		/**Р’С‹Р·С‹РІР°РµС‚СЃСЏ СЃРёСЃС‚РµРјРѕР№ СЌРјСѓР»СЏС†РёРё С„РёР·. РјРёСЂР° РїСЂРё РІС‹Р·РѕРІР° РјРµС‚РѕРґР°  physics.dynWorld.stepSimulation
+		 * СЃР»СѓР¶РёС‚ РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ РјРёСЂР°, 
+		 * РЅСѓ РёР»Рё СЂРµР°РєС†РёРё РЅР° РµРіРѕ РёР·РјРµРЅРµРЅРёРµ*/
 		@Override
         public void getWorldTransform(Matrix4 WorldTrans){
-            WorldTrans.set(transform); // мир изменился запишем это в transform            
+            WorldTrans.set(transform); // РјРёСЂ РёР·РјРµРЅРёР»СЃСЏ Р·Р°РїРёС€РµРј СЌС‚Рѕ РІ transform            
 //    		Gdx.app.log("LGame"," transform");
         }
-		/**Вызывается системой эмуляции физ. мира после getWorldTransform
-		 * служит для применения изменений к модели
-		 * ну и для реакции на её изменение*/
+		/**Р’С‹Р·С‹РІР°РµС‚СЃСЏ СЃРёСЃС‚РµРјРѕР№ СЌРјСѓР»СЏС†РёРё С„РёР·. РјРёСЂР° РїРѕСЃР»Рµ getWorldTransform
+		 * СЃР»СѓР¶РёС‚ РґР»СЏ РїСЂРёРјРµРЅРµРЅРёСЏ РёР·РјРµРЅРµРЅРёР№ Рє РјРѕРґРµР»Рё
+		 * РЅСѓ Рё РґР»СЏ СЂРµР°РєС†РёРё РЅР° РµС‘ РёР·РјРµРЅРµРЅРёРµ*/
         @Override
         public void setWorldTransform(Matrix4 WorldTrans){
-            transform.set(WorldTrans); // применим изменения мира к нам
+            transform.set(WorldTrans); // РїСЂРёРјРµРЅРёРј РёР·РјРµРЅРµРЅРёСЏ РјРёСЂР° Рє РЅР°Рј
  //   		Gdx.app.log("LGame"," transform" + transform);
-            if (transformlistener!= null) transformlistener.transformEvent(transform); // отправим нашу актуальную трансформацию слушателю
+            if (transformlistener!= null) transformlistener.transformEvent(transform); // РѕС‚РїСЂР°РІРёРј РЅР°С€Сѓ Р°РєС‚СѓР°Р»СЊРЅСѓСЋ С‚СЂР°РЅСЃС„РѕСЂРјР°С†РёСЋ СЃР»СѓС€Р°С‚РµР»СЋ
         }
     }
 }
